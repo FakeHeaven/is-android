@@ -18,12 +18,12 @@ import java.io.UnsupportedEncodingException;
 
 public class Login extends AppCompatActivity {
 
-    private static String id;
+    public static String id;
     private RequestQueue requestQueue;
     private EditText email;
-    public static int test;
+    private static String test;
     private EditText password;
-    private static String token;
+    public static String token;
     private String url = "https://wmanage.azurewebsites.net/api/token";
     private TextView status;
 
@@ -48,16 +48,17 @@ public class Login extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
+                    System.out.println(response);
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                     Login.id = jsonObject.getString("userId");
                     Login.token = jsonObject.getString("accessToken");
+                    System.out.println(Login.token + " " + Login.id);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     Log.i("LOG_RESPONSE", response);
-
+                    test = response;
 //                    status.setText(response);
                 }
 
@@ -83,16 +84,15 @@ public class Login extends AppCompatActivity {
                     }
                 }
 
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        status.setText(responseString);
-                        test = Integer.parseInt(responseString);
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
+//                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                    String responseString = "";
+//                    if (response != null) {
+//                        responseString = String.valueOf(response.statusCode);
+//                        status.setText(responseString);
+//                        test = Integer.parseInt(responseString);
+//                    }
+//                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+//                }
 
             };
 
@@ -100,10 +100,12 @@ public class Login extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (test == 200){
+//        System.out.println(test);
+        if (test != null){
             Intent intent = new Intent(this, Hub.class);
             String message = "Uspesno si se prijavil.";
-            intent.putExtra(EXTRA_MESSAGE, message);
+            intent.putExtra("id", Login.id);
+            intent.putExtra("token", Login.token);
             startActivity(intent);
         }
     }
