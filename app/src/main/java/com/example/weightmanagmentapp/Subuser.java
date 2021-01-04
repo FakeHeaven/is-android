@@ -1,6 +1,7 @@
 package com.example.weightmanagmentapp;
 
 import android.content.Intent;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -13,10 +14,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,10 +64,43 @@ public class Subuser extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://wmanage.azurewebsites.net/api/subusers?userId=53991b28-ba99-4d85-97f4-787a86a2468d", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println(teDisplay);
                 Log.i("LOG_RESPONSE", response);
-//                    status.setText(response);
+                teDisplay.setMovementMethod(new ScrollingMovementMethod());
+                JSONArray jsonObject = null;
+                try {
+                    jsonObject= new JSONArray(response);
+                ArrayList<String> data = new ArrayList<>();
+                for (int i = 0; i < jsonObject.length(); i++){
+                    try {
+                        JSONObject object =jsonObject.getJSONObject(i);
+                        String name = object.getString("id");
+                        String surname = object.getString("name");
+                        String enrollmentDate = object.getString("dateOfBirth");
+
+                        data.add(name + " " + surname + " " + enrollmentDate);
+
+                    } catch (JSONException e){
+                        e.printStackTrace();
+                        return;
+
+                    }
+
+                }
+
+                teDisplay.setText("");
+
+
+                for (String row: data){
+                    String currentText = teDisplay.getText().toString();
+                    teDisplay.setText(currentText + "\n\n" + row);
+                }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
+//                    status.setText(response);
+
 
         }, new Response.ErrorListener() {
             @Override
