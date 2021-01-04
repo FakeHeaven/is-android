@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/subuser"
+            android:title="Subuser"
+            android:icon="@drawable/ic_user"/>
+    <item
+            android:id="@+id/home"
+            android:title="Home"
+            android:icon="@drawable/ic_home"/>
+    <item
+            android:id="@+id/weight"
+            android:title="Weight"
+            android:icon="@drawable/ic_weight"/>
+
+</menu>

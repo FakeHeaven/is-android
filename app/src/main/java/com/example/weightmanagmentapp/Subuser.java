@@ -7,25 +7,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Hub extends AppCompatActivity {
-
+public class Subuser extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hub);
+        setContentView(R.layout.activity_subuser);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.subuser);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.subuser:
-                        startActivity(new Intent(getApplicationContext(),Subuser.class));
-                        overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
+                        startActivity(new Intent(getApplicationContext(),Hub.class));
+                        overridePendingTransition(0,0);
                         return true;
                     case R.id.weight:
                         startActivity(new Intent(getApplicationContext(),Weight.class));
