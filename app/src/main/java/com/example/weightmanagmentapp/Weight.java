@@ -27,11 +27,11 @@ public class Weight extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.subuser:
-                        startActivity(new Intent(getApplicationContext(),Subuser.class));
+                        startActivity(new Intent(getApplicationContext(),Subuser.class).putExtra("id", id).putExtra("token", token));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(),Hub.class));
+                        startActivity(new Intent(getApplicationContext(),Hub.class).putExtra("id", id).putExtra("token", token));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.weight:

@@ -53,12 +53,12 @@ public class Login extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                     Login.id = jsonObject.getString("userId");
                     Login.token = jsonObject.getString("accessToken");
-                    System.out.println(Login.token + " " + Login.id);
+                    status.setText("Granted");
+//                    System.out.println(Login.token + " " + Login.id);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     Log.i("LOG_RESPONSE", response);
-                    test = response;
 //                    status.setText(response);
                 }
 
@@ -66,6 +66,7 @@ public class Login extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("LOG_RESPONSE", error.toString());
+                    status.setText("Denied");
                 }
             }) {
 
@@ -101,13 +102,14 @@ public class Login extends AppCompatActivity {
             e.printStackTrace();
         }
 //        System.out.println(test);
-        if (test != null){
-            Intent intent = new Intent(this, Hub.class);
-            String message = "Uspesno si se prijavil.";
-            intent.putExtra("id", Login.id);
-            intent.putExtra("token", Login.token);
-            startActivity(intent);
-        }
     }
 
+    public void Enter(View view) {
+            if (status.getText().toString().equals("Granted")) {
+                Intent intent = new Intent(this, Hub.class);
+                intent.putExtra("id", Login.id);
+                intent.putExtra("token", Login.token);
+                startActivity(intent);
+            }
+    }
 }

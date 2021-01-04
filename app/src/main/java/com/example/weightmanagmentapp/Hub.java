@@ -28,13 +28,15 @@ public class Hub extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.subuser:
-                        startActivity(new Intent(getApplicationContext(),Subuser.class));
+                        startActivity(new Intent(getApplicationContext(),Subuser.class).putExtra("id", id).putExtra("token", token));
+                        System.out.println(id + "kurba" + token);
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
                         return true;
                     case R.id.weight:
-                        startActivity(new Intent(getApplicationContext(),Weight.class));
+                        startActivity(new Intent(getApplicationContext(),Weight.class).putExtra("id", id).putExtra("token", token));
+                        System.out.println(id + "kurba" + token);
                         overridePendingTransition(0,0);
                         return true;
                 }

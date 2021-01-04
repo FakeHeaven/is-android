@@ -30,11 +30,11 @@ public class Subuser extends AppCompatActivity {
                     case R.id.subuser:
                         return true;
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(),Hub.class));
+                        startActivity(new Intent(getApplicationContext(),Hub.class).putExtra("id", id).putExtra("token", token));;
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.weight:
-                        startActivity(new Intent(getApplicationContext(),Weight.class));
+                        startActivity(new Intent(getApplicationContext(),Weight.class).putExtra("id", id).putExtra("token", token));
                         overridePendingTransition(0,0);
                         return true;
                 }
