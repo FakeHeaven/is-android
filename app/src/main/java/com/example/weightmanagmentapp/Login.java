@@ -10,18 +10,13 @@ import android.view.View;
 import android.widget.TextView;
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.security.PrivateKey;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     private static String id;
     private RequestQueue requestQueue;
@@ -35,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         email = (EditText) findViewById(R.id.teEmail);
         password = (EditText) findViewById(R.id.tePassword);
         status = (TextView) findViewById(R.id.status);
@@ -56,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         JSONObject jsonObject = new JSONObject(response);
-                    MainActivity.id = jsonObject.getString("userId");
-                    MainActivity.token = jsonObject.getString("accessToken");
+                    Login.id = jsonObject.getString("userId");
+                    Login.token = jsonObject.getString("accessToken");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -106,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (test == 200){
-            Intent intent = new Intent(this,MainPage.class);
+            Intent intent = new Intent(this, Hub.class);
             String message = "Uspesno si se prijavil.";
             intent.putExtra(EXTRA_MESSAGE, message);
             startActivity(intent);
