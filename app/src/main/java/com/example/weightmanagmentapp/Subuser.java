@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class Subuser extends AppCompatActivity {
     private EditText date;
     private TextView teDisplay;
     private EditText uid;
-    private String url = "https://wmanage.azurewebsites.net/api/subusers";
+    private final String url = "https://wmanage.azurewebsites.net/api/subusers";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class Subuser extends AppCompatActivity {
             id = extras.getString("id");
             token = extras.getString("token");
         }
-        teDisplay = (TextView) findViewById(R.id.teDisplay);
+        teDisplay = findViewById(R.id.teDisplay);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.subuser);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,9 +63,9 @@ public class Subuser extends AppCompatActivity {
                 return false;
             }
         });
-        name = (EditText) findViewById(R.id.teName);
-        date = (EditText) findViewById(R.id.teDate);
-        uid = (EditText) findViewById(R.id.teUID);
+        name = findViewById(R.id.teName);
+        date = findViewById(R.id.teDate);
+        uid = findViewById(R.id.teUID);
         teDisplay();
 
     }
@@ -178,12 +179,7 @@ public class Subuser extends AppCompatActivity {
 
                 @Override
                 public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                        return null;
-                    }
+                    return mRequestBody == null ? null : mRequestBody.getBytes(StandardCharsets.UTF_8);
                 }
 
                 @Override

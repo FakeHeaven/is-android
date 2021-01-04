@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 
 public class Login extends AppCompatActivity {
@@ -24,16 +25,16 @@ public class Login extends AppCompatActivity {
     private static String test;
     private EditText password;
     public static String token;
-    private String url = "https://wmanage.azurewebsites.net/api/token";
+    private final String url = "https://wmanage.azurewebsites.net/api/token";
     private TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        email = (EditText) findViewById(R.id.teEmail);
-        password = (EditText) findViewById(R.id.tePassword);
-        status = (TextView) findViewById(R.id.status);
+        email = findViewById(R.id.teEmail);
+        password = findViewById(R.id.tePassword);
+        status = findViewById(R.id.status);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
     }
     public void getToken(View view){
@@ -78,12 +79,7 @@ public class Login extends AppCompatActivity {
 
                 @Override
                 public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                        return null;
-                    }
+                    return mRequestBody == null ? null : mRequestBody.getBytes(StandardCharsets.UTF_8);
                 }
 
 //                protected Response<String> parseNetworkResponse(NetworkResponse response) {

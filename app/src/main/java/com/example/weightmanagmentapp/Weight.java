@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class Weight extends AppCompatActivity {
     private TextView teDisplay;
     private EditText uid;
     private EditText weight;
-    private String url = "https://wmanage.azurewebsites.net/api/weights";
+    private final String url = "https://wmanage.azurewebsites.net/api/weights";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +64,10 @@ public class Weight extends AppCompatActivity {
                 return false;
             }
         });
-        teDisplay = (TextView) findViewById(R.id.teDisplay);
-        uid = (EditText) findViewById(R.id.teUID);
-        date = (EditText) findViewById(R.id.teDate);
-        weight = (EditText) findViewById(R.id.teWeight);
+        teDisplay = findViewById(R.id.teDisplay);
+        uid = findViewById(R.id.teUID);
+        date = findViewById(R.id.teDate);
+        weight = findViewById(R.id.teWeight);
     }
     public void teDisplay() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -180,12 +181,7 @@ public class Weight extends AppCompatActivity {
 
                 @Override
                 public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                        return null;
-                    }
+                    return mRequestBody == null ? null : mRequestBody.getBytes(StandardCharsets.UTF_8);
                 }
 
                 @Override
