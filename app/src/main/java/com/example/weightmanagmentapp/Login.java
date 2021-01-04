@@ -37,7 +37,6 @@ public class Login extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
     }
     public void getToken(View view){
-        final String EXTRA_MESSAGE = "com.example.universityapp.MESSAGE";
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
@@ -53,6 +52,8 @@ public class Login extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                     Login.id = jsonObject.getString("userId");
                     Login.token = jsonObject.getString("accessToken");
+                    System.out.println("idd " + id);
+                        System.out.println("token " + token);
                     status.setText("Granted");
 //                    System.out.println(Login.token + " " + Login.id);
                     } catch (JSONException e) {
@@ -107,8 +108,8 @@ public class Login extends AppCompatActivity {
     public void Enter(View view) {
             if (status.getText().toString().equals("Granted")) {
                 Intent intent = new Intent(this, Hub.class);
-                intent.putExtra("id", Login.id);
-                intent.putExtra("token", Login.token);
+                intent.putExtra("id", id);
+                intent.putExtra("token", token);
                 startActivity(intent);
             }
     }
