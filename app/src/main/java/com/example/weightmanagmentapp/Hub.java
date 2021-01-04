@@ -29,14 +29,14 @@ public class Hub extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.subuser:
                         startActivity(new Intent(getApplicationContext(),Subuser.class).putExtra("id", id).putExtra("token", token));
-                        System.out.println(id + "kurba" + token);
+//                        System.out.println(id + " test 1 " + token);
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
                         return true;
                     case R.id.weight:
                         startActivity(new Intent(getApplicationContext(),Weight.class).putExtra("id", id).putExtra("token", token));
-                        System.out.println(id + "kurba" + token);
+//                        System.out.println(id + " test 2 " + token);
                         overridePendingTransition(0,0);
                         return true;
                 }

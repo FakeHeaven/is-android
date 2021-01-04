@@ -47,13 +47,13 @@ public class Login extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    System.out.println(response);
+//                    System.out.println(response);
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                     Login.id = jsonObject.getString("userId");
                     Login.token = jsonObject.getString("accessToken");
-                    System.out.println("idd " + id);
-                        System.out.println("token " + token);
+//                    System.out.println("idd " + id);
+//                        System.out.println("token " + token);
                     status.setText("Granted");
 //                    System.out.println(Login.token + " " + Login.id);
                     } catch (JSONException e) {
