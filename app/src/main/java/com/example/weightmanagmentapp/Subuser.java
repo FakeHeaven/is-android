@@ -26,9 +26,10 @@ import java.util.Map;
 public class Subuser extends AppCompatActivity {
     String id;
     String token;
-    private EditText Name;
-    private EditText Date;
+    private EditText name;
+    private EditText date;
     private TextView teDisplay;
+    private EditText uid;
     private String url = "https://wmanage.azurewebsites.net/api/subusers";
 
     @Override
@@ -61,67 +62,68 @@ public class Subuser extends AppCompatActivity {
                 return false;
             }
         });
-        Name = (EditText) findViewById(R.id.teName);
-        Date = (EditText) findViewById(R.id.teDate);
+        name = (EditText) findViewById(R.id.teName);
+        date = (EditText) findViewById(R.id.teDate);
+        uid = (EditText) findViewById(R.id.teUID);
         teDisplay();
 
     }
 
-public void teDisplay(){
-    System.out.println("ID is " + id + "\n" + "Token is " + token);
-    RequestQueue requestQueue = Volley.newRequestQueue(this);
-    StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://wmanage.azurewebsites.net/api/subusers?userId=" + id, new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
-            Log.i("LOG_RESPONSE", response);
-            teDisplay.setMovementMethod(new ScrollingMovementMethod());
-            JSONArray jsonObject;
-            try {
-                jsonObject= new JSONArray(response);
-                ArrayList<String> data = new ArrayList<>();
-                for (int i = 1; i < jsonObject.length(); i++){
-                    try {
-                        JSONObject object =jsonObject.getJSONObject(i);
-                        String uid = object.getString("id");
-                        String name = object.getString("name");
-                        String date = object.getString("dateOfBirth");
+    public void teDisplay() {
+        System.out.println("ID is " + id + "\n" + "Token is " + token);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url + "?userId=" + id, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("LOG_RESPONSE", response);
+                teDisplay.setMovementMethod(new ScrollingMovementMethod());
+                JSONArray jsonObject;
+                try {
+                    jsonObject = new JSONArray(response);
+                    ArrayList<String> data = new ArrayList<>();
+                    for (int i = 1; i < jsonObject.length(); i++) {
+                        try {
+                            JSONObject object = jsonObject.getJSONObject(i);
+                            String uid = object.getString("id");
+                            String name = object.getString("name");
+                            String date = object.getString("dateOfBirth");
 
-                        data.add(uid + " " + name + " " + date);
+                            data.add(uid + " " + name + " " + date);
 
-                    } catch (JSONException e){
-                        e.printStackTrace();
-                        return;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+
+                        }
 
                     }
 
+                    teDisplay.setText("");
+
+
+                    for (String row : data) {
+                        String currentText = teDisplay.getText().toString();
+                        teDisplay.setText(currentText + "\n\n" + row);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-                teDisplay.setText("");
-
-
-                for (String row: data){
-                    String currentText = teDisplay.getText().toString();
-                    teDisplay.setText(currentText + "\n\n" + row);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-
-        }
 //                    status.setText(response);
 
 
-    }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e("LOG_RESPONSE", error.toString());
-        }
-    }) {
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("LOG_RESPONSE", error.toString());
+            }
+        }) {
 
-        @Override
-        public String getBodyContentType() {
-            return "application/json; charset=utf-8";
-        }
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
 
 //            @Override
 //            protected Response<String> parseNetworkResponse(NetworkResponse response) {
@@ -133,30 +135,31 @@ public void teDisplay(){
 //                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
 //            }
 
-        @Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            HashMap<String, String> headers = new HashMap<String, String>();
-            headers.put("Content-Type", "application/json");
-            headers.put("Authorization", "Bearer " + token);
-            return headers;
-        }
-    };
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
         requestQueue.add(stringRequest);
-}
+    }
 
     public void subCreate(View view) {
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("userId", id);
-            jsonBody.put("name", Name.getText());
-            jsonBody.put("dateOfBirth", Date.getText());
+            jsonBody.put("name", name.getText());
+            jsonBody.put("dateOfBirth", date.getText());
             final String mRequestBody = jsonBody.toString();
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
 //                    System.out.println(response);
+                    teDisplay();
                     Log.i("LOG_RESPONSE", response);
 //                    status.setText(response);
                 }
@@ -207,6 +210,42 @@ public void teDisplay(){
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        teDisplay();
     }
+
+    public void subDelete(View view) {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JSONObject jsonBody = new JSONObject();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url + "/" + uid.getText().toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("LOG_RESPONSE", response);
+                teDisplay();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("LOG_RESPONSE", error.toString());
+            }
+        }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+
+        };
+
+        requestQueue.add(stringRequest);
+    }
+
+
 }
