@@ -214,7 +214,6 @@ public class Subuser extends AppCompatActivity {
 
     public void subDelete(View view) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JSONObject jsonBody = new JSONObject();
 
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url + "/" + uid.getText().toString(), new Response.Listener<String>() {
             @Override

@@ -23,7 +23,7 @@
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="ID"
+                android:hint="Subuser ID"
                 android:inputType="number"
                 android:ems="10"
                 android:id="@+id/teUID"
@@ -32,14 +32,15 @@
                 android:layout_marginLeft="17dp" android:layout_marginStart="17dp"/>
         <Button
                 android:text="Get"
+                android:onClick="teGet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/teGet"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginLeft="17dp" app:layout_constraintBaseline_toBaselineOf="@+id/teSet"
                 android:layout_marginStart="17dp"/>
         <TextView
-                android:text="TextView"
                 android:layout_width="0dp"
+                android:scrollbars = "vertical"
                 android:layout_height="0dp" android:id="@+id/teDisplay"
                 android:layout_marginTop="19dp" android:layout_marginBottom="27dp"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/textView7"
@@ -59,7 +60,7 @@
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="yyyy-dd-mmT-hh:mm:ssZ"
+                android:hint="Date yyyy-dd-mm"
                 android:ems="10"
                 android:inputType="date"
                 android:id="@+id/teDate"
@@ -68,6 +69,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/teWeight"/>
         <Button
                 android:text="SET"
+                android:onClick="teSet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/teSet"
                 android:layout_marginTop="14dp" android:layout_marginLeft="16dp"
