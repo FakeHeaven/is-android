@@ -7,4 +7,4 @@
 Kratek pregled sposobnosti aplikacije:
 * Login
 * Sledenje teži poduporabnikov, ter dodajanje meritev
-* Izpis, kreiranje in odstranitevpoduporabnikov
+* Izpis, kreiranje in odstranitev poduporabnikov
