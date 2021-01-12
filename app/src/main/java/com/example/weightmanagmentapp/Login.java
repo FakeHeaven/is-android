@@ -1,8 +1,11 @@
 package com.example.weightmanagmentapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.EditText;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,8 +15,6 @@ import com.android.volley.*;
 import com.android.volley.toolbox.*;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 
@@ -22,7 +23,7 @@ public class Login extends AppCompatActivity {
     public static String id;
     private RequestQueue requestQueue;
     private EditText email;
-    private static String test;
+//    private static String test;
     private EditText password;
     public static String token;
     private final String url = "https://wmanage.azurewebsites.net/api/token";
@@ -77,6 +78,7 @@ public class Login extends AppCompatActivity {
                     return "application/json; charset=utf-8";
                 }
 
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     return mRequestBody == null ? null : mRequestBody.getBytes(StandardCharsets.UTF_8);
