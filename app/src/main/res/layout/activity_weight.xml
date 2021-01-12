@@ -60,7 +60,8 @@
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Date yyyy-dd-mm"
+                android:hint="Date"
+                android:focusable="false"
                 android:ems="10"
                 android:inputType="date"
                 android:id="@+id/teDate"

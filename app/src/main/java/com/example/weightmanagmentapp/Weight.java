@@ -1,31 +1,33 @@
 package com.example.weightmanagmentapp;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.android.volley.*;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Weight extends AppCompatActivity {
+public class Weight extends AppCompatActivity implements View.OnClickListener {
     String id;
     String token;
     private EditText date;
@@ -33,6 +35,7 @@ public class Weight extends AppCompatActivity {
     private EditText uid;
     private EditText weight;
     private final String url = "https://wmanage.azurewebsites.net/api/weights";
+    private int mYear, mMonth, mDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,34 @@ public class Weight extends AppCompatActivity {
         teDisplay = findViewById(R.id.teDisplay);
         uid = findViewById(R.id.teUID);
         date = findViewById(R.id.teDate);
+        date.setOnClickListener(this);
         weight = findViewById(R.id.teWeight);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onClick(View view) {
+
+        if (view == date) {
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
+                            date.setText(year + "-" + String.format("%02d", (monthOfYear + 1)) + "-" + String.format("%02d", dayOfMonth));
+
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+        }
+
     }
     public void teDisplay() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -179,6 +209,7 @@ public class Weight extends AppCompatActivity {
                     return "application/json; charset=utf-8";
                 }
 
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     return mRequestBody == null ? null : mRequestBody.getBytes(StandardCharsets.UTF_8);

@@ -1,13 +1,18 @@
 package com.example.weightmanagmentapp;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.android.volley.*;
@@ -17,14 +22,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Subuser extends AppCompatActivity {
+public class Subuser extends AppCompatActivity implements View.OnClickListener {
     String id;
     String token;
     private EditText name;
@@ -32,6 +35,7 @@ public class Subuser extends AppCompatActivity {
     private TextView teDisplay;
     private EditText uid;
     private final String url = "https://wmanage.azurewebsites.net/api/subusers";
+    private int mYear, mMonth, mDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +69,38 @@ public class Subuser extends AppCompatActivity {
         });
         name = findViewById(R.id.teName);
         date = findViewById(R.id.teDate);
+        date.setOnClickListener(this);
         uid = findViewById(R.id.teUID);
         teDisplay();
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onClick(View view) {
+
+        if (view == date) {
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
+                            date.setText(year + "-" + String.format("%02d", (monthOfYear + 1)) + "-" + String.format("%02d", dayOfMonth));
+
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+        }
+
+    }
+
 
     public void teDisplay() {
         System.out.println("ID is " + id + "\n" + "Token is " + token);
@@ -177,6 +209,7 @@ public class Subuser extends AppCompatActivity {
                     return "application/json; charset=utf-8";
                 }
 
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     return mRequestBody == null ? null : mRequestBody.getBytes(StandardCharsets.UTF_8);
